@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#09090d">
+  <title>Music Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark">ML</div>
+      <div class="brand-copy"><strong>MUSIC LAB</strong><span>YOUR ARTIST WORKSPACE</span></div>
+      <button class="avatar" id="profileAvatar" aria-label="Профиль">♪</button>
+    </header>
+
+    <main>
+      <section class="view active" id="homeView">
+        <div class="hero">
+          <div class="eyebrow"><span class="live-dot"></span> ARTIST CONTROL ROOM</div>
+          <h1>Твоя музыка.<br><span>Твои правила.</span></h1>
+          <p>От первой идеи до даты релиза. Собери свой музыкальный мир в одном месте.</p>
+          <button class="primary wide" data-view="toolsView">Открыть инструменты <span>↗</span></button>
+          <div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div>
+        </div>
+
+        <div class="section-heading"><div><span class="eyebrow">WORKSPACE</span><h2>Твоя студия</h2></div><span class="tiny-label">01 / 04</span></div>
+        <div class="feature-grid">
+          <button class="feature-card card-purple" data-tool="alias"><span class="feature-icon">✳</span><span class="feature-title">Псевдоним</span><span class="feature-desc">Найди своё имя</span><span class="card-arrow">↗</span></button>
+          <button class="feature-card card-blue" data-tool="track"><span class="feature-icon">♫</span><span class="feature-title">Идеи треков</span><span class="feature-desc">Поймай настроение</span><span class="card-arrow">↗</span></button>
+          <button class="feature-card card-pink" data-tool="cover"><span class="feature-icon">▧</span><span class="feature-title">Обложки</span><span class="feature-desc">Визуальный концепт</span><span class="card-arrow">↗</span></button>
+          <button class="feature-card card-green" data-view="releasesView"><span class="feature-icon">◷</span><span class="feature-title">Релизы</span><span class="feature-desc">Держи всё по плану</span><span class="card-arrow">↗</span></button>
+        </div>
+
+        <div class="section-heading"><div><span class="eyebrow">YOUR PROJECTS</span><h2>Быстрый обзор</h2></div></div>
+        <div class="stats-row">
+          <div class="stat-card"><span>ДЕМО</span><strong id="demoCount">0</strong><small>в каталоге</small></div>
+          <div class="stat-card"><span>РЕЛИЗЫ</span><strong id="releaseCount">0</strong><small>в планах</small></div>
+          <div class="stat-card"><span>ИДЕИ</span><strong id="ideaCount">∞</strong><small>без лимитов</small></div>
+        </div>
+        <div class="quote-card"><span class="quote-mark">“</span><p>Не жди идеального момента. Сделай следующий трек.</p><span class="quote-caption">A NOTE FROM THE LAB</span></div>
+      </section>
+
+      <section class="view" id="toolsView">
+        <div class="page-intro"><span class="eyebrow">CREATIVE TOOLS</span><h1>Инструменты<span>.</span></h1><p>Разгоняй идеи, пока не появится та самая.</p></div>
+        <div class="tool-tabs">
+          <button class="tool-tab selected" data-tool="alias">Псевдоним</button>
+          <button class="tool-tab" data-tool="track">Название</button>
+          <button class="tool-tab" data-tool="cover">Обложка</button>
+        </div>
+        <div class="panel">
+          <div class="panel-kicker" id="toolKicker">ARTIST IDENTITY / 01</div>
+          <h2 id="toolTitle">Найди своё имя</h2>
+          <p class="muted" id="toolDescription">Задай вайб и получи идеи для артистического псевдонима.</p>
+          <label for="genre">Жанр</label>
+          <select id="genre"><option>Cloud rap</option><option>Trap</option><option>Hyperpop</option><option>Indie</option><option>R&B</option><option>Phonk</option><option>Electronic</option><option>Alternative</option></select>
+          <label for="mood">Настроение</label>
+          <select id="mood"><option value="dark">Тёмное / меланхоличное</option><option value="dreamy">Сонное / воздушное</option><option value="energetic">Энергичное</option><option value="romantic">Романтичное</option><option value="minimal">Минималистичное</option></select>
+          <label for="seed">Ключевое слово <span class="optional">необязательно</span></label>
+          <input id="seed" placeholder="Например: loner, blue, 111">
+          <button class="primary wide" id="generateBtn">Сгенерировать идеи <span>✳</span></button>
+        </div>
+        <div id="results" class="results hidden"></div>
+        <div class="notice">Генераторы работают локально по шаблонам. Это творческие идеи, а не проверка занятости имени.</div>
+      </section>
+
+      <section class="view" id="demosView">
+        <div class="page-intro"><span class="eyebrow">PRIVATE ARCHIVE</span><h1>Мои демо<span>.</span></h1><p>Черновики, фрагменты и идеи, которые нельзя потерять.</p></div>
+        <form id="demoForm" class="panel">
+          <div class="panel-kicker">NEW RECORD / DEMO</div>
+          <label for="demoTitle">Название трека</label><input id="demoTitleInput" required placeholder="Например: 3AM voicemail">
+          <label for="demoGenre">Жанр</label><select id="demoGenre"><option>Cloud rap</option><option>Trap</option><option>Hyperpop</option><option>R&B</option><option>Indie</option><option>Electronic</option><option>Другое</option></select>
+          <label for="demoStatus">Статус</label><select id="demoStatus"><option>Идея</option><option>В работе</option><option>Готово</option><option>Выпущено</option></select>
+          <label for="demoNotes">Заметки</label><textarea id="demoNotes" rows="3" placeholder="Бит, референсы, что доделать..."></textarea>
+          <label for="demoFile">Аудиофайл <span class="optional">опционально, хранится локально в браузере не будет</span></label><input id="demoFile" type="file" accept="audio/*">
+          <button class="primary wide" type="submit">Добавить в каталог <span>＋</span></button>
+          <p class="muted small">В этой версии каталог хранит карточки и заметки. Файл аудио не загружается на сервер.</p>
+        </form>
+        <div class="section-heading"><div><span class="eyebrow">LIBRARY</span><h2>Каталог</h2></div><button class="text-button" id="exportDemos">Экспорт JSON ↓</button></div>
+        <div id="demoList" class="item-list"></div>
+      </section>
+
+      <section class="view" id="releasesView">
+        <div class="page-intro"><span class="eyebrow">RELEASE MANAGEMENT</span><h1>План релизов<span>.</span></h1><p>Маленькие шаги превращают демо в релиз.</p></div>
+        <form id="releaseForm" class="panel">
+          <div class="panel-kicker">NEW RELEASE / SCHEDULE</div>
+          <label for="releaseTitle">Название релиза</label><input id="releaseTitle" required placeholder="Название сингла или EP">
+          <label for="releaseDate">Дата выхода</label><input id="releaseDate" type="date" required>
+          <label for="releaseType">Формат</label><select id="releaseType"><option>Сингл</option><option>EP</option><option>Альбом</option><option>Клип</option></select>
+          <label for="releaseStatus">Этап</label><select id="releaseStatus"><option>Идея</option><option>Запись</option><option>Сведение / мастеринг</option><option>Обложка</option><option>Дистрибуция</option><option>Запланирован</option><option>Выпущен</option></select>
+          <button class="primary wide" type="submit">Запланировать релиз <span>＋</span></button>
+        </form>
+        <div class="section-heading"><div><span class="eyebrow">ROADMAP</span><h2>Твой календарь</h2></div></div>
+        <div id="releaseList" class="item-list"></div>
+      </section>
+
+      <section class="view" id="profileView">
+        <div class="page-intro"><span class="eyebrow">ARTIST PROFILE</span><h1>Твой профиль<span>.</span></h1><p>Определи свой звук и сохрани артистическую идентичность.</p></div>
+        <form id="profileForm" class="panel">
+          <div class="profile-emblem">♪</div>
+          <label for="artistName">Псевдоним</label><input id="artistName" placeholder="Твоё артистическое имя">
+          <label for="artistGenres">Жанры</label><input id="artistGenres" placeholder="Cloud rap, alternative, R&B">
+          <label for="artistBio">О себе</label><textarea id="artistBio" rows="4" placeholder="Звук, настроение, история..."></textarea>
+          <label for="artistLink">Ссылка на музыку</label><input id="artistLink" type="url" placeholder="https://...">
+          <button class="primary wide" type="submit">Сохранить профиль <span>✓</span></button>
+        </form>
+        <div class="notice">Данные сохраняются в локальном браузере. Для синхронизации между устройствами потребуется серверная база.</div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item selected" data-view="homeView"><span>⌂</span><small>Главная</small></button>
+      <button class="nav-item" data-view="toolsView"><span>✳</span><small>Инструменты</small></button>
+      <button class="nav-item" data-view="demosView"><span>♫</span><small>Демо</small></button>
+      <button class="nav-item" data-view="releasesView"><span>◷</span><small>Релизы</small></button>
+      <button class="nav-item" data-view="profileView"><span>◉</span><small>Профиль</small></button>
+    </nav>
+    <div id="toast" class="toast" role="status"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
